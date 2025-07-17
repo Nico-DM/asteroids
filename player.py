@@ -31,21 +31,21 @@ class Player(CircleShape):
     def shoot(self):
         if self.time_until_next_shot <= 0:
             self.time_until_next_shot = PLAYER_SHOOT_COOLDOWN
-            shot = Shot(self.position)
+            shot = Shot(self.position[0], self.position[1])
             shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
     
     def update(self, dt):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w]: # W = FORWARD
+        if keys[pygame.K_w] or keys[pygame.K_UP]: # W or UP = move forward
             self.move(dt)
-        if keys[pygame.K_a]: # A = LEFT
-            self.rotate(dt * -1)
-        if keys[pygame.K_s]: # S = BACKWARDS
-            self.move(dt * -1)
-        if keys[pygame.K_d]: # D = RIGHT
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]: # A or LEFT = rotate counterclockwise
+            self.rotate(-dt)
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]: # S or DOWN = move backwards
+            self.move(-dt)
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]: # D or RIGHT = rotate clockwise
             self.rotate(dt)
-        if keys[pygame.K_SPACE]: # SPACE = SHOOT
+        if keys[pygame.K_SPACE]: # SPACE = shoot
             self.shoot()
         
         if self.time_until_next_shot > 0:
